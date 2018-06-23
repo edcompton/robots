@@ -30,13 +30,15 @@ game.setCoordinates = function(coords) {
   if (individualCoords.length === 4) {
     coordObj.x = parseInt(individualCoords[0] + individualCoords[1], 10);
     coordObj.y = parseInt(individualCoords[2] + individualCoords[3], 10);
-    if (individualCoords[4]) coordObj.direction = individualCoords[4];
-  } else {
+    if (individualCoords[4])
+      coordObj.direction = individualCoords[4];
+    }
+  else {
     coordObj.x = parseInt(individualCoords[0], 10);
     coordObj.y = parseInt(individualCoords[1], 10);
-    if (individualCoords[2]) coordObj.direction = individualCoords[2];
-  }
-
+    if (individualCoords[2])
+      coordObj.direction = individualCoords[2];
+    }
 
   return coordObj;
 };
@@ -55,7 +57,6 @@ game.initialiseMovement = function() {
   console.log(game.finalRobotPositions);
 };
 
-
 game.findFinalPosition = function(startingCoord, instructions) {
   let robotCoord = startingCoord;
   let lostCoords;
@@ -63,7 +64,31 @@ game.findFinalPosition = function(startingCoord, instructions) {
   let y;
   let direction;
   let returnString = '';
-};
 
+  // Use a for loop to retain the ability to use break
+  for (var i = 0; i < instructions.length; i++) {
+    const movement = instructions[i];
+    console.log(robotCoord);
+
+    const unModified = {
+      x: robotCoord.x,
+      y: robotCoord.y,
+      direction: robotCoord.direction
+    };
+
+    switch (movement) {
+      case 'F':
+        console.log(movement);
+        break;
+      case 'L':
+        console.log(movement);
+        break;
+      case 'R':
+        console.log(movement);
+        break;
+      default:
+    }
+  }
+};
 
 game.initialise();
