@@ -41,7 +41,19 @@ game.setCoordinates = function(coords) {
   return coordObj;
 };
 
+game.initialiseMovement = function() {
+  game.finalRobotPositions = [];
+  game.lostCoordinates = [];
 
+  Object.keys(game.robotPositions).forEach((num) => {
+    // Create consts for ease of reading
+    const startingCoord = game.robotPositions[num].startingCoord;
+    const instructions = game.robotPositions[num].instructions;
+
+    game.finalRobotPositions = startingCoord, instructions;
+    console.log(game.finalRobotPositions);
+  });
+};
 
 
 game.initialise();
