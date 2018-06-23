@@ -8,6 +8,38 @@ game.initialise = function() {
 
   game.inputs = process.argv.slice(3, process.argv.length);
 
-  console.log(game.gridCoords);
-  console.log(game.inputs);
+  // Save all of the relevant robot instructions and coordinates in an object, using an array for the instructions to enable ease of sorting later
+  let robotNumber = 1;
+  game.robotPositions = game.inputs.reduce((robotObj, dataPoint, index) => {
+    if (index % 2 === 0) {
+      robotObj[robotNumber] = {};
+      robotObj[robotNumber].startingCoord = game.setCoordinates(dataPoint);
+      robotObj[robotNumber].instructions = game.inputs[index + 1].split('');
+      robotNumber++;
+    }
+    return robotObj;
+  }, {});
+
+  console.log(game.robotPositions);
 };
+
+game.setCoordinates = function(coords) {
+  const coordObj = {};
+  const individualCoords = coords.split('');
+  if (individualCoords.length === 4) {
+    coordObj.x = parseInt(individualCoords[0] + individualCoords[1], 10);
+    coordObj.y = parseInt(individualCoords[2] + individualCoords[3], 10);
+    if (individualCoords[4]) coordObj.direction = individualCoords[4];
+  } else {
+    coordObj.x = parseInt(individualCoords[0], 10);
+    coordObj.y = parseInt(individualCoords[1], 10);
+    if (individualCoords[2]) coordObj.direction = individualCoords[2];
+  }
+
+
+  return coordObj;
+};
+
+
+
+game.initialise();
