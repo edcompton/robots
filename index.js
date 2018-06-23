@@ -20,7 +20,8 @@ game.initialise = function() {
     return robotObj;
   }, {});
 
-  console.log(game.robotPositions);
+  // Move robots around the grid
+  game.initialiseMovement();
 };
 
 game.setCoordinates = function(coords) {
@@ -39,6 +40,7 @@ game.setCoordinates = function(coords) {
 
   return coordObj;
 };
+
 
 
 
