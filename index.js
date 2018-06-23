@@ -69,16 +69,14 @@ game.findFinalPosition = function(startingCoord, instructions) {
   for (var i = 0; i < instructions.length; i++) {
     const movement = instructions[i];
     console.log(robotCoord);
-
     const unModified = {
       x: robotCoord.x,
       y: robotCoord.y,
       direction: robotCoord.direction
     };
-
     switch (movement) {
       case 'F':
-        console.log(movement);
+        robotCoord = game.moveForward(robotCoord);
         break;
       case 'L':
         console.log(movement);
@@ -88,7 +86,64 @@ game.findFinalPosition = function(startingCoord, instructions) {
         break;
       default:
     }
+    if (game.isLost) {
+      lostCoords = unModified;
+      console.log('LOST COORDS', lostCoords);
+      break;
+    }
   }
+
+  if (lostCoords) {
+    game.isLost = false;
+    x = lostCoords.x;
+    y = lostCoords.y;
+    direction = lostCoords.direction;
+    returnString = `${x}${y}${direction}LOST`;
+    game.lostCoordinates.push(`${x}${y}${direction}`);
+    console.log(game.lostCoordinates);
+  } else {
+    x = robotCoord.x;
+    y = robotCoord.y;
+    direction = robotCoord.direction;
+    returnString = `${x}${y}${direction}`;
+  }
+
+  return returnString;
+};
+
+game.moveForward = function(currentCoords) {
+  // N = y+1   E = x+1   S = y-1   W = x-1
+  const direction = currentCoords.direction;
+  const modifiedCoords = currentCoords;
+
+  let axis;
+  const stringCoordinates = `${modifiedCoords.x}${modifiedCoords.y}${modifiedCoords.direction}`;
+
+  if (!game.lostCoordinates.includes(stringCoordinates)) {
+    if (direction === 'N') {
+      axis = 'y';
+      modifiedCoords.y++;
+    } else if (direction === 'E') {
+      axis = 'x';
+      modifiedCoords.x++;
+    } else if (direction === 'S') {
+      axis = 'y';
+      modifiedCoords.y--;
+    } else {
+      axis = 'x';
+      modifiedCoords.x--;
+    }
+  }
+
+  game.isLost = game.lostChecker(modifiedCoords, axis);
+
+  return modifiedCoords;
+};
+
+game.lostChecker = function(coords, axisIncrement) {
+  return coords[axisIncrement] > game.gridCoords[axisIncrement] || coords[axisIncrement] < 0
+    ? true
+    : false;
 };
 
 game.initialise();
