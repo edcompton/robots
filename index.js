@@ -19,10 +19,10 @@ game.initialise = function() {
     }
     return robotObj;
   }, {});
-
   // Move robots around the grid
   game.initialiseMovement();
 };
+
 
 game.setCoordinates = function(coords) {
   const coordObj = {};
@@ -30,15 +30,13 @@ game.setCoordinates = function(coords) {
   if (individualCoords.length === 4) {
     coordObj.x = parseInt(individualCoords[0] + individualCoords[1], 10);
     coordObj.y = parseInt(individualCoords[2] + individualCoords[3], 10);
-    if (individualCoords[4])
-      coordObj.direction = individualCoords[4];
-    }
-  else {
+    if (individualCoords[4]) coordObj.direction = individualCoords[4];
+  } else {
     coordObj.x = parseInt(individualCoords[0], 10);
     coordObj.y = parseInt(individualCoords[1], 10);
-    if (individualCoords[2])
-      coordObj.direction = individualCoords[2];
-    }
+    if (individualCoords[2]) coordObj.direction = individualCoords[2];
+  }
+
 
   return coordObj;
 };
@@ -79,10 +77,10 @@ game.findFinalPosition = function(startingCoord, instructions) {
         robotCoord = game.moveForward(robotCoord);
         break;
       case 'L':
-        console.log(movement);
+        robotCoord = game.rotateRobot(robotCoord, movement);
         break;
       case 'R':
-        console.log(movement);
+        robotCoord = game.rotateRobot(robotCoord, movement);
         break;
       default:
     }
@@ -109,6 +107,22 @@ game.findFinalPosition = function(startingCoord, instructions) {
   }
 
   return returnString;
+};
+
+game.rotateRobot = function(coords, direction) {
+  const compassPoints = ['N', 'E', 'S', 'W'];
+  const currentPosition = compassPoints.findIndex(point => point === coords.direction);
+
+  if (direction === 'L') {
+    compassPoints[currentPosition - 1]
+      ? coords.direction = compassPoints[currentPosition - 1]
+      : coords.direction = compassPoints[compassPoints.length - 1];
+  } else {
+    compassPoints[currentPosition + 1]
+      ? coords.direction = compassPoints[currentPosition + 1]
+      : coords.direction = compassPoints[0];
+  }
+  return coords;
 };
 
 game.moveForward = function(currentCoords) {
@@ -146,4 +160,5 @@ game.lostChecker = function(coords, axisIncrement) {
     : false;
 };
 
+// Run the program
 game.initialise();
