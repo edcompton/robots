@@ -50,9 +50,19 @@ game.initialiseMovement = function() {
     const startingCoord = game.robotPositions[num].startingCoord;
     const instructions = game.robotPositions[num].instructions;
 
-    game.finalRobotPositions = startingCoord, instructions;
-    console.log(game.finalRobotPositions);
+    game.finalRobotPositions.push(game.findFinalPosition(startingCoord, instructions));
   });
+  console.log(game.finalRobotPositions);
+};
+
+
+game.findFinalPosition = function(startingCoord, instructions) {
+  let robotCoord = startingCoord;
+  let lostCoords;
+  let x;
+  let y;
+  let direction;
+  let returnString = '';
 };
 
 
