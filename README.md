@@ -7,6 +7,7 @@ run ```node index.js``` followed by the coordinates, followed by each robot and 
 For example:
 
 ```node index.js  53 11E RFRFRFRF 32N FRRFLLFFRRFLL 03W LLFFFLFLFL```
+
 ```node index.js 1540 1015S RFLRFLFFRF 1232 FFFRRLRFLRF```
 
 ##Summary of approach
