@@ -26,29 +26,30 @@ game.initialise = function() {
   game.initialiseMovement();
 };
 
+// Set the coordinates of the grid and ensure that game properties are set to dictate the logic of how robot coordinates should be stored depending on number of coordinates (e.g. x = 1 digit, y = 2 digits)
 game.setRectCoordinates = function(coords) {
   const coordObj = {};
   const coordsArr = coords.split('');
+  // There are four coordinates, two x, two y
   if (coordsArr.length === 4) {
     game.fourDigitCoords = true;
     coordObj.x = parseInt(coordsArr[0] + coordsArr[1], 10);
     coordObj.y = parseInt(coordsArr[2] + coordsArr[3], 10);
-    if (coordsArr[4]) coordObj.direction = coordsArr[4];
+    // There are 3 coordinates, variety in how they can be constructed so use helper function
   } else if (coordsArr.length === 3) {
     game.threeDigitCoords = true;
     game.threeCoordinateLogic(coordsArr, coordObj);
+    // There are two coordinates, single x and y
   } else {
     coordObj.x = parseInt(coordsArr[0], 10);
     coordObj.y = parseInt(coordsArr[1], 10);
-    if (coordsArr[2]) coordObj.direction = coordsArr[2];
   }
-
   return coordObj;
 };
 
 game.threeCoordinateLogic = function(coordsArr, coordObj) {
   // If the first number is greater than 5 or all numbers are less than 5, assume x = 1 digit, y = 2. The second piece of logic here is an assumption rather than a rule, but as the area is a rectangle, there's no problem as long as same rules are applied to robot coordinate inputs
-  if (coordsArr[0] > 5 || ((coordsArr[0] < 5 && coordsArr[1] < 5) && coordsArr[2] < 5)) {
+  if (coordsArr[0] > 5 || (coordsArr[0] === 5 && coordsArr[1] > 0)) {
     game.yTwoDigits = true;
     coordObj.x = parseInt(coordsArr[0], 10);
     coordObj.y = parseInt(coordsArr[1] + coordsArr[2], 10);
@@ -58,8 +59,6 @@ game.threeCoordinateLogic = function(coordsArr, coordObj) {
     coordObj.x = parseInt(coordsArr[0] + coordsArr[1], 10);
     coordObj.y = parseInt(coordsArr[2], 10);
   }
-  // Add direction assignment so can use function for both game area and robot coordinate assignment
-  if (coordsArr[3]) coordObj.direction = coordsArr[3];
   return coordObj;
 };
 
@@ -67,18 +66,23 @@ game.setRobotCoordinates = function(coords) {
   const coordObj = {};
   const coordsArr = coords.split('');
   if (game.fourDigitCoords) {
-    console.log(coordsArr);
     coordObj.x = parseInt(coordsArr[0] + coordsArr[1], 10);
     coordObj.y = parseInt(coordsArr[2] + coordsArr[3], 10);
     coordObj.direction = coordsArr[4];
   } else if (game.threeDigitCoords) {
-    game.threeCoordinateLogic(coordsArr, coordObj);
+    if (game.yTwoDigits) {
+      coordObj.x = parseInt(coordsArr[0], 10);
+      coordObj.y = parseInt(coordsArr[1] + coordsArr[2], 10);
+    } else {
+      coordObj.x = parseInt(coordsArr[0] + coordsArr[1], 10);
+      coordObj.y = parseInt(coordsArr[2], 10);
+    }
+    coordObj.direction = coordsArr[3];
   } else {
     coordObj.x = parseInt(coordsArr[0], 10);
     coordObj.y = parseInt(coordsArr[1], 10);
     if (coordsArr[2]) coordObj.direction = coordsArr[2];
   }
-
   return coordObj;
 };
 
@@ -88,7 +92,7 @@ game.initialiseMovement = function() {
     // Create consts for ease of reading
     const startingCoord = game.robotPositions[num].startingCoord;
     const instructions = game.robotPositions[num].instructions;
-    console.log(startingCoord);
+
     game.finalRobotPositions.push(game.findFinalPosition(startingCoord, instructions));
   });
   console.log(game.finalRobotPositions);
@@ -97,13 +101,13 @@ game.initialiseMovement = function() {
 game.findFinalPosition = function(startingCoord, instructions) {
   let robotCoord = startingCoord;
   let lostCoords;
-  let returnString = '';
 
   // Use a for loop to retain the ability to use break to exit loop on robot 'death'
   for (var i = 0; i < instructions.length; i++) {
     const movement = instructions[i];
     // Create a new object in memory
     const unModified = JSON.parse(JSON.stringify(robotCoord));
+
     // Switch through instructions (switch statement can account for future inputs)
     switch (movement) {
       case 'F':
@@ -120,23 +124,17 @@ game.findFinalPosition = function(startingCoord, instructions) {
     // Run check per loop for lost robots, break from loop if object property is true
     if (game.isLost) {
       lostCoords = unModified;
-      console.log('LOST COORDS', lostCoords);
       break;
     }
   }
   // Modify returned string based on whether robot lost or not. Store coordinates of lost robots for future reference on global game object
   if (lostCoords) {
-    game.isLost = false;
     const { x, y, direction } = lostCoords;
-    returnString = `${x}${y}${direction}LOST`;
     game.lostCoordinates.push(`${x}${y}${direction}`);
-    console.log(game.lostCoordinates);
+    return game.formatResponse(lostCoords, game.isLost);
   } else {
-    const { x, y, direction } = robotCoord.x;
-    returnString = `${x}${y}${direction}`;
+    return game.formatResponse(robotCoord);
   }
-
-  return returnString;
 };
 
 game.rotateRobot = function(coords, direction) {
@@ -178,10 +176,37 @@ game.moveForward = function(currentCoords) {
       modifiedCoords.x--;
     }
   }
-
   game.isLost = game.lostChecker(modifiedCoords, axis);
 
   return modifiedCoords;
+};
+
+// Format the string response to account for whether a leading zero is required or if the robot is lost
+game.formatResponse = function(coords, lost) {
+  let { x, y } = coords;
+  const { direction } = coords;
+  let returnString = '';
+
+  // Game grid has four coordinates
+  if (game.fourDigitCoords) {
+    if (x.toString().length === 1) x = `0${x}`;
+    if (y.toString().length === 1) y = `0${y}`;
+
+  // Account for the two variations in a three coordinate grid input
+  } else if (game.threeDigitCoords && game.yTwoDigits) {
+    if (y.toString().length === 1) y = `0${y}`;
+  } else if (game.threeDigitCoords && !game.yTwoDigits) {
+    if (x.toString().length === 1) y = `0${y}`;
+  }
+  // The robot is lost
+  if (lost) {
+    returnString = `${x}${y}${direction}LOST`;
+    game.isLost = false;
+  // Normal position return
+  } else {
+    returnString = `${x}${y}${direction}`;
+  }
+  return returnString;
 };
 
 game.lostChecker = function(coords, axisIncrement) {
