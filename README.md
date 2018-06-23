@@ -1,6 +1,6 @@
 # robots
 
-##Instructions for use
+## Instructions for use
 
 run ```node index.js``` followed by the coordinates, followed by each robot and it's respective instructions, separated by whitespace.
 
@@ -10,10 +10,10 @@ For example:
 
 ```node index.js 1540 1015S RFLRFLFFRF 1232 FFFRRLRFLRF```
 
-##Summary of approach
+## Summary of approach
 
 
-##Instructions Interpretation
+## Instructions Interpretation
 
 1. Square grid that robots can move around
 
@@ -31,7 +31,7 @@ For example:
 
 8. Output is the final position of the robot. If the robot falls of the edge, it's the final coordinate and orientation followed by LOST (logged to prevent following robots falling off)
 
-##Main problems
+## Main problems
 
 1. Input: separate and store input strings, execute individually. Bear in mind variation of coordinate input that can take place (b/w 2-4 digits, 3 digits requires some logic)
 
@@ -45,7 +45,7 @@ For example:
 
 6. Output: Simple formatted array of final positions per robot execution.
 
-##General approach
+## General approach
 
 1. Work through each of the above problems sequentially. Pseudo code and commit frequently.
 
@@ -59,7 +59,7 @@ Find a method of validating results, in addition to the sample inputs provided.
 
 3. Create error handling once 'perfect' route is established, to account for variation in coordinate input/structure. Test various combinations.
 
-##Considerations
+## Considerations
 
 1. Coordinate storing: if the number of coordinates is 3,
 
