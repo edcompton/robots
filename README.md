@@ -12,6 +12,7 @@ For example:
 
 ## Summary of approach
 
+My plan was to get a working version using the sample inputs first before worrying about the variations of input or output. Once I had a working, object orientated version, I started looking at the possibility of 3 digit or 4 digit coordinates. Having sorted this problem, I then focussed on formatting the output correctly, then refactoring my code to be more modular. My final structure is based around functional programming principles with a global attributes object, used to store references of robot coordinates and final positions. 
 
 ## Instructions Interpretation
 
