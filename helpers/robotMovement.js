@@ -89,7 +89,5 @@ function moveForward(currentCoords) {
 }
 
 module.exports = {
-  executeAllMoves,
-  rotateRobot,
-  moveForward
+  executeAllMoves
 };

@@ -16,7 +16,7 @@ This is a simple node.js command line program without a JS framework.
 My plan was to get a working version using the sample inputs first before worrying about the variations of input or output. Having sorted this problem, I then focused on formatting the output correctly, then refactoring my code to be more modular. Once I had a version working via command entry all on a single line, I then refactored my code to allow for multi-line input into the terminal. This enabled me to massively simplify and refactor my code.
 
 
-My final structure is based around functional programming principles with a global attributes object, used to store references of robot coordinates and final positions.
+My final structure is based around functional programming principles with a global attributes object, used to store references of robot coordinates and final positions. Total exercise t
 
 ## Instructions Interpretation
 
@@ -38,7 +38,7 @@ My final structure is based around functional programming principles with a glob
 
 ## Main problems
 
-1. Input: separate and store input strings, execute individually. Bear in mind variation of coordinate input that can take place (b/w 2-4 digits, 3 digits requires some logic)
+1. Input: separate and store input strings, execute individually.
 
 2. Grid creation: not super difficult but may be worth creating separate visual grid to conceptualise robot routes.
 
@@ -50,33 +50,13 @@ My final structure is based around functional programming principles with a glob
 
 6. Output: Simple formatted array of final positions per robot execution.
 
-## General approach
-
-1. Work through each of the above problems sequentially. Pseudo code and commit frequently.
-
-2. Create version that works using only the command line, e.g.
-
-- run file,
-- provide inputs,
-- receive outputs.
-
-Find a method of validating results, in addition to the sample inputs provided.
-
-3. Create error handling once 'perfect' route is established, to account for variation in coordinate input/structure. Test various combinations.
 
 ## Considerations
 
-1. Coordinate storing: if the number of coordinates is 3,
+1. Movement Forward: N = y+1 E = x+1 S = y-1 W = x-1
 
-- if first number is > 5, x = 1 digit, y = 2 digits.
-- If first number is < 5 and second number is > 5, x = 2 y = 1.
-- If first number is 5 and second is 0, x = 2, y = 1.  
-- If all numbers < 5, not possible to distinguish intentional cut of coordinates, but as playing area is a rectangle not a fatal issue as long as rules are applied consistently when storing robot coords - can assume that x = 2, y = 1.
+2. Need to manage lost scenario - use a for loop over map or forEach, so it's possible to break from the loop.
 
-2. Movement Forward: N = y+1 E = x+1 S = y-1 W = x-1
+3. Sort input storing - use a global object for the purposes of this exercise.
 
-3. Need to manage lost scenario - use a for loop over map or forEach, so it's possible to break from the loop.
-
-4. Sort input storing - use a global object for the purposes of this exercise.
-
-5. Ensure considerations made for long sequences - something to bear in mind, but shouldn't be an issue with the method considered.
+4. Ensure error handling for long sequences - something to bear in mind, but shouldn't be an issue with the method considered.

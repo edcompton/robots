@@ -16,11 +16,10 @@ function gatherInputs() {
   rl.prompt();
   rl.on('line', (line) => {
     // If command has been given to run program
-    if (line === 'run') {
-      findFinalPositions.call(game);
-      process.exit(0);
-      // If it is the first line of the input, and therefore the grid coordinates
-    } else if (line && counter === 0) {
+    if (line === 'run') rl.close();
+
+    // If it is the first line of the input, and therefore the grid coordinates
+    if (line && counter === 0) {
       const grid = line.split(' ');
 
       if (grid[0] > 50 || grid[1] > 50) {
@@ -44,15 +43,20 @@ function gatherInputs() {
     // If the input is robot starting coordinates
     } else if (line && /[0-9]/.test(line.split(' ')[0])) {
       const input = line.split(' ');
-      game.robotPositions[counter] = {
-        startingCoord: { x: input[0], y: input[1], direction: input[2] }
-      };
+      game.robotPositions[counter] = { startingCoord: { x: input[0], y: input[1], direction: input[2] } };
+
+    // No valid input, run again
+    } else {
+      rl.prompt();
     }
-    rl.prompt();
+
+  }).on('close', () => {
+    findAndPrintFinalPositions.call(game);
+    process.exit(0);
   });
 }
 
-function findFinalPositions() {
+function findAndPrintFinalPositions() {
   Object.keys(this.robotPositions).forEach((num) => {
     // Create consts for ease of reading
     const startingCoord = this.robotPositions[num].startingCoord;
