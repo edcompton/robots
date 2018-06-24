@@ -44,12 +44,8 @@ function gatherInputs() {
     } else if (line && /[0-9]/.test(line.split(' ')[0])) {
       const input = line.split(' ');
       game.robotPositions[counter] = { startingCoord: { x: input[0], y: input[1], direction: input[2] } };
-
-    // No valid input, run again
-    } else {
       rl.prompt();
     }
-
   }).on('close', () => {
     findAndPrintFinalPositions.call(game);
     process.exit(0);

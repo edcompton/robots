@@ -6,15 +6,15 @@ function formatResponse(coords, lost) {
   let returnString = '';
 
   // Game grid has four coordinates
-  if (this.fourDigitCoords) {
+  if (this.gridCoords.y.toString().length > 1) {
     if (x.toString().length === 1) x = `0${x}`;
     if (y.toString().length === 1) y = `0${y}`;
 
   // Account for the two variations in a three coordinate grid input
-  } else if (this.threeDigitCoords && this.yTwoDigits) {
+  } else if (this.gridCoords.y.toString().length > 1) {
     if (y.toString().length === 1) y = `0${y}`;
-  } else if (this.threeDigitCoords && !this.yTwoDigits) {
-    if (x.toString().length === 1) y = `0${y}`;
+  } else if (this.gridCoords.x.toString().length > 1) {
+    if (x.toString().length === 1) x = `0${x}`;
   }
   // The robot is lost
   if (lost) {
