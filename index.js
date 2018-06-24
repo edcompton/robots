@@ -1,25 +1,47 @@
-const { setRectCoordinates, buildRobotObjects } = require('./helpers/coordinates');
-const { executeAllMoves } = require('./helpers/robotMovement');
+const {executeAllMoves} = require('./helpers/robotMovement');
+const readline = require('readline');
 
 const game = {};
 
-// First off, initialise the exercise by grabbing the inputs given on the command line and storing them in variables for later.
-function initialise() {
-  game.isLost = false;
-  game.finalRobotPositions = [];
-  game.lostCoordinates = [];
+game.isLost = false;
+game.finalRobotPositions = [];
+game.lostCoordinates = [];
+game.robotPositions = {};
 
-  // Store the arguments from the command line in variables to be passed to setup functions in due course. Convert gridSize to an integer for ease of later board creation (if visualising).
-  game.gridCoords = setRectCoordinates.call(game, process.argv.slice(2, 3)[0]);
-  game.inputs = process.argv.slice(3, process.argv.length);
+function gatherInputs() {
+  var rl = readline.createInterface(process.stdin, process.stdout);
+  let counter = 0;
+  rl.setPrompt('> ');
+  rl.prompt();
 
-  // Save all of the relevant robot instructions and coordinates in an object, using an array for the instructions to enable ease of sorting later
-  game.robotPositions = buildRobotObjects.call(game, game.inputs);
+  rl.on('line', (line) => {
 
-  // Move robots around the grid
-  findFinalPositions.call(game);
+    if (line === 'run') {
+      findFinalPositions.call(game);
+      process.exit(0);
+    } else if (line && counter === 0) {
+      counter++;
+      const grid = line.split(' ');
+      game.gridCoords = { x: grid[0], y: grid[1] };
+
+    } else if (line && !line.match(/[0-9]/)) {
+      game.robotPositions[counter].instructions = line.split('');
+      counter++;
+
+    } else if (line) {
+      const input = line.split(' ');
+      game.robotPositions[counter] = {
+        startingCoord: {
+          x: parseInt(input[0]),
+          y: parseInt(input[1]),
+          direction: input[2]
+        }
+      };
+    }
+
+    rl.prompt();
+  });
 }
-
 
 function findFinalPositions() {
   Object.keys(this.robotPositions).forEach((num) => {
@@ -30,8 +52,8 @@ function findFinalPositions() {
     this.finalRobotPositions.push(executeAllMoves.call(this, startingCoord, instructions));
   });
   // Print the final results
-  console.log(this.finalRobotPositions.join(' '));
+  console.log(`\nPOSITIONS:\n${this.finalRobotPositions.join('\n')}`);
 }
 
 // Run the program
-initialise();
+gatherInputs();
