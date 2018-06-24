@@ -46,6 +46,9 @@ function gatherInputs() {
       game.robotPositions[counter] = { startingCoord: { x: input[0], y: input[1], direction: input[2] } };
       rl.prompt();
     }
+
+    rl.prompt();
+
   }).on('close', () => {
     findAndPrintFinalPositions.call(game);
     process.exit(0);

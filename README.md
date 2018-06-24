@@ -8,6 +8,22 @@
 4. For each robot, enter the starting coordinates on one line, followed by the instructions on the next line
 5. Type ```run``` and press enter to receive outputs
 
+
+Example input:
+
+```5 3
+1 1 E
+RFRFRFRF
+
+3 2 N
+FRRFLLFFRRFLL
+
+0 3 W
+LLFFFLFLFL
+
+run
+```
+
 ## Summary of approach
 
 This is a simple node.js command line program without a JS framework.
