@@ -30,7 +30,7 @@ function findFinalPositions() {
     this.finalRobotPositions.push(executeAllMoves.call(this, startingCoord, instructions));
   });
   // Print the final results
-  console.log(this.finalRobotPositions);
+  console.log(this.finalRobotPositions.join(' '));
 }
 
 // Run the program
