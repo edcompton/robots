@@ -11,7 +11,7 @@ function executeAllMoves(startingCoord, instructions) {
     // Create a new object in memory to retain final position of robot if lost
     const unModified = JSON.parse(JSON.stringify(robotCoord));
 
-    // Switch through instructions (switch statement can account for addition of future inputs/instructions)
+    // Switch through instructions (switch statement can account for addition of future inputs/instructions, else could use a turnary)
     switch (movement) {
       case 'F':
         robotCoord = moveForward.call(this, robotCoord);

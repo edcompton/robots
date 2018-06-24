@@ -3,17 +3,20 @@
 ## Instructions for use
 
 1. Clone the repository
-2. In the command line, run ```node index.js``` followed by the coordinates, followed by each robot and it's respective instructions, separated by whitespace.
-
-For example:
-
-```node index.js  53 11E RFRFRFRF 32N FRRFLLFFRRFLL 03W LLFFFLFLFL```
-
-```node index.js 1540 1015S RFLRFLFFRF 1232 FFFRRLRFLRF```
+2. In the command line, run ```node index.js```
+3. Enter grid coordinates
+4. For each robot, enter the starting coordinates on one line, followed by the instructions on the next line
+5. Type ```run``` and press enter to receive outputs
 
 ## Summary of approach
 
-My plan was to get a working version using the sample inputs first before worrying about the variations of input or output. Once I had a working, object orientated version, I started looking at the possibility of 3 digit or 4 digit coordinates. Having sorted this problem, I then focussed on formatting the output correctly, then refactoring my code to be more modular. My final structure is based around functional programming principles with a global attributes object, used to store references of robot coordinates and final positions.
+This is a simple node.js command line program without a JS framework.
+
+
+My plan was to get a working version using the sample inputs first before worrying about the variations of input or output. Having sorted this problem, I then focused on formatting the output correctly, then refactoring my code to be more modular. Once I had a version working via command entry all on a single line, I then refactored my code to allow for multi-line input into the terminal. This enabled me to massively simplify and refactor my code.
+
+
+My final structure is based around functional programming principles with a global attributes object, used to store references of robot coordinates and final positions.
 
 ## Instructions Interpretation
 

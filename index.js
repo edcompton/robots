@@ -9,18 +9,17 @@ function gatherInputs() {
   game.finalRobotPositions = [];
   game.lostCoordinates = [];
   game.robotPositions = {};
-
-  var rl = readline.createInterface(process.stdin, process.stdout);
+  const rl = readline.createInterface(process.stdin, process.stdout);
   let counter = 0;
+
   rl.setPrompt('> ');
   rl.prompt();
-
   rl.on('line', (line) => {
-
+    // If command has been given to run program
     if (line === 'run') {
       findFinalPositions.call(game);
       process.exit(0);
-
+      // If it is the first line of the input, and therefore the grid coordinates
     } else if (line && counter === 0) {
       const grid = line.split(' ');
 
@@ -31,6 +30,7 @@ function gatherInputs() {
         game.gridCoords = { x: grid[0], y: grid[1] };
         counter++;
       }
+    // If the input is instructions
     } else if ((line && /[A-Z]/.test(line.split(' ')[0])) && game.robotPositions[counter]) {
       const instructions = line.split('');
 
@@ -41,14 +41,13 @@ function gatherInputs() {
         game.robotPositions[counter].instructions = instructions;
         counter++;
       }
-
+    // If the input is robot starting coordinates
     } else if (line && /[0-9]/.test(line.split(' ')[0])) {
       const input = line.split(' ');
       game.robotPositions[counter] = {
-        startingCoord: { x: parseInt(input[0]), y: parseInt(input[1]), direction: input[2] }
+        startingCoord: { x: input[0], y: input[1], direction: input[2] }
       };
     }
-
     rl.prompt();
   });
 }
