@@ -16,7 +16,7 @@ This is a simple node.js command line program without a JS framework.
 My plan was to get a working version using the sample inputs first before worrying about the variations of input or output. Having sorted this problem, I then focused on formatting the output correctly, then refactoring my code to be more modular. Once I had a version working via command entry all on a single line, I then refactored my code to allow for multi-line input into the terminal. This enabled me to massively simplify and refactor my code.
 
 
-My final structure is based around functional programming principles with a global attributes object, used to store references of robot coordinates and final positions. Total exercise t
+My final structure is based around functional programming principles with a global attributes object, used to store references of robot coordinates and final positions. Total exercise took about 3 to 4 hours across the weekend.
 
 ## Instructions Interpretation
 
