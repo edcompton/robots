@@ -11,7 +11,8 @@
 
 Example input:
 
-```5 3
+```
+5 3
 1 1 E
 RFRFRFRF
 
